@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+    <None Include="wwwroot\css\fonts\Material-Design-Iconic-Font.svg" />
+    <None Include="wwwroot\css\fonts\Material-Design-Iconic-Font.woff2" />
+    <None Include="wwwroot\js\bootstrap.min.js" />
+    <None Include="wwwroot\js\jquery.min.js" />
+    <None Include="wwwroot\js\jquery.unobtrusive-ajax.min.js" />
+    <None Include="wwwroot\js\jquery.validate.js" />
+    <None Include="wwwroot\js\jquery.validate.min.js" />
+    <None Include="wwwroot\js\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\js\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\js\modernizr-custom.js" />
+    <None Include="wwwroot\js\script.js" />
+    <None Include="wwwroot\js\site.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TopLearn.Core\TopLearn.Core.csproj" />
+    <ProjectReference Include="..\TopLearn.DataLayer\TopLearn.DataLayer.csproj" />
+  </ItemGroup>
+
+</Project>

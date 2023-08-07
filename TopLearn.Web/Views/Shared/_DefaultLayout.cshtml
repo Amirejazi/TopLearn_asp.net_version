@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html class="no-js" dir="rtl" lang="fa-IR">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"]|تاپ لرن</title>
+    <partial name="_MetaTags" />
+    <partial name="_Styles" />
+
+    <script src="~/js/jquery.min.js"></script>
+</head>
+<body>
+    <script src="~/js/modernizr-custom.js"></script>
+
+    <div class="landing-layer">
+        <div class="container">
+            <nav>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-12">
+                        <ul>
+                            <li>
+                                <a href=""> همکاری در فروش </a>
+                                <a href=""> درباره ما </a>
+                                <a href=""> تماس با ما </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="clientarea">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="loggein ">
+                                    <i class="zmdi zmdi-account"></i>
+                                    <a href=""> @User.Identity.Name  خوش آمدی </a>/
+                                <a asp-action="Logout" asp-controller="Account"> خروج </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="signin ">
+                                <i class="zmdi zmdi-account"></i>
+                                <a asp-action="Login" asp-controller="Account"> ورود </a> /
+                                <a asp-action="Register" asp-controller="Account"> عضویت </a>
+                                </div>
+                            }
+                            
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            @RenderSection("SearchBox", required:false)
+        </div>
+    </div>
+
+    <!-- main manu -->
+    <div class="main-menu">
+        <div class="container">
+            <nav>
+                <span class="responsive-sign"><i class="zmdi zmdi-menu"></i></span>
+                <ul>
+                    <li>
+                        <a href=""> برنامه نویسی موبایل </a>
+                        <ul>
+                            <li><a href=""> زامارین  Xamarin </a></li>
+                            <li><a href=""> react Native </a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href=""> برنامه نویسی وب </a>
+                        <ul>
+                            <li><a href=""> Asp.net WebForms </a></li>
+                            <li><a href=""> Asp.net MVC </a></li>
+                            <li><a href=""> PHP MVC </a></li>
+                            <li><a href=""> PHP FrameWorks </a></li>
+                            <li><a href=""> Asp.net Core </a></li>
+                        </ul>
+                    </li>
+                    <li><a href=""> برنامه نویسی تحت ویندوز </a></li>
+                    <li>
+                        <a href=""> طراحی سایت </a>
+                        <ul>
+                            <li><a href=""> طراحی سایت </a></li>
+                            <li><a href=""> Bootstrap </a></li>
+                            <li><a href=""> Angular </a></li>
+                            <li><a href=""> react </a></li>
+                            <li><a href=""> Jquery </a></li>
+                        </ul>
+                    </li>
+                    <li><a href=""> بانک های اطلاعاتی </a></li>
+                    <li><a href=""> سئو </a></li>
+                    <li><a href=""> سیستم عامل </a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!-- /main manu -->
+    <!-- content -->
+    @RenderBody()
+    <!-- /content -->
+    <!-- footer -->
+    <partial name="_Footer" />
+    <!-- /footer -->
+
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/script.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
