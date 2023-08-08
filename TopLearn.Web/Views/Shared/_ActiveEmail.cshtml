@@ -1,0 +1,9 @@
+﻿@model TopLearn.DataLayer.Entities.User.User
+
+<div style="direction:rtl; padding:20px">
+    <h2>@Model.UserName عزیز!</h2>
+    <p> برای ثبت نام شما در تاپلرن ,جهت ادامه کار میبایست حساب کاربری خود را فعال کنید </p>
+    <p>
+        <a href="https://localhost:7003/account/activeaccount/@(Model.ActiveCode)"> فعال سازی حساب کاربری</a>
+    </p>
+</div>

@@ -6,6 +6,7 @@ using TopLearn.Core.Convertors;
 using TopLearn.Core.DTOs;
 using TopLearn.Core.Generator;
 using TopLearn.Core.Security;
+using TopLearn.Core.Senders;
 using TopLearn.Core.Services.interfaces;
 using TopLearn.DataLayer.Context;
 using TopLearn.DataLayer.Entities.User;
@@ -15,10 +16,11 @@ namespace TopLearn.Web.Controllers
     public class AccountController : Controller
     {
         private IUserService _userService;
-
-        public AccountController(IUserService userService)
+        private IViewRenderService _viewRender;
+        public AccountController(IUserService userService, IViewRenderService viewRender)
         {
             _userService = userService;
+            _viewRender = viewRender;
         }
 
         #region Register
@@ -56,6 +58,12 @@ namespace TopLearn.Web.Controllers
                 RegisteredDate = DateTime.Now
             };
             _userService.AddUser(user);
+            #region Send Validation Email
+
+            string body = _viewRender.RenderToStringAsync("_ActiveEmail", user);
+            EmailSender.SendEmailAsync(user.Email, "فعالسازی", body);
+
+            #endregion
             return View("SuccessRegister", user);
         }
 
@@ -124,5 +132,6 @@ namespace TopLearn.Web.Controllers
         }
 
         #endregion
+        
     }
 }

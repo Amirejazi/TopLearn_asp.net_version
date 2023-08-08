@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="wwwroot\css\fonts\Material-Design-Iconic-Font.svg" />
     <None Include="wwwroot\css\fonts\Material-Design-Iconic-Font.woff2" />
     <None Include="wwwroot\js\bootstrap.min.js" />
