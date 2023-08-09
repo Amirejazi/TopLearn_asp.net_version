@@ -1,0 +1,42 @@
+﻿@using TopLearn.Core.Convertors
+@model  TopLearn.Core.DTOs.InformationUserViewModel
+@{
+    ViewData["Title"] = "پنل کاربری";
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> پنل کاربری @User.Identity.Name </li>
+        </ul>
+    </nav>
+</div>
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <partial name="_SideBar" />
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> داشبورد </h1></header>
+                        <div class="inner">
+                            <div class="account-information">
+                                <h3> اطلاعات کاربری </h3>
+                                <ul>
+                                    <li> <i class="zmdi zmdi-assignment-account"></i> نام کاربری :  @Model.UserName </li>
+                                    <li> <i class="zmdi zmdi-email"></i> ایمیل : @Model.Email </li>
+                                    <li> <i class="zmdi zmdi-calendar-check"></i> تاریخ عضویت : @Model.RegisteredDate.ToShamsi() </li>
+                                    <li> <i class="zmdi zmdi-money"></i> موجودی حساب : @Model.Wallet </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

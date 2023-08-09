@@ -70,6 +70,7 @@ namespace TopLearn.Web.Controllers
         #endregion
 
         #region Login
+
         [Route("Login")]
         public IActionResult Login()
         {
@@ -132,6 +133,70 @@ namespace TopLearn.Web.Controllers
         }
 
         #endregion
-        
+
+        #region Forgot Password
+
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost("ForgotPassword")]
+        public IActionResult ForgotPassword(ForgotPasswordViewModel forgot)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(forgot);
+            }
+
+            string fixedEmail = FixedText.FixEmail(forgot.Email);
+            var user = _userService.GetUserByEmail(fixedEmail);
+            if(user == null)
+            {
+                ModelState.AddModelError("Email", "کاربری با این ایمیل یافت نشد!");
+                return View(forgot);
+            }
+            string body = _viewRender.RenderToStringAsync("_ForgotPassword", user);
+            EmailSender.SendEmailAsync(user.Email, "بازیابی رمز عبور", body);
+            ViewData["IsSuccess"] = true;
+            return View(forgot);
+        }
+
+        #endregion
+
+        #region Reset Password
+
+        public IActionResult ResetPassword(string id)
+        {
+            return View(new ResetPassworViewModel()
+            {
+                ActiveCode = id
+            });
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(ResetPassworViewModel reset)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            if (!ModelState.IsValid)
+            {
+                return View(reset);
+            }
+
+            var user = _userService.GetUserByActiveCode(reset.ActiveCode);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            string hashpassword = PasswordHelper.EncodePasswordMd5(reset.Password);
+            user.Password = hashpassword;
+            _userService.UpdateUser(user);
+            ViewData["IsSuccess"] = true;
+            return View(reset);
+        }
+
+        #endregion
+
     }
 }

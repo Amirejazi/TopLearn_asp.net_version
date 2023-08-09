@@ -1,0 +1,40 @@
+﻿@using TopLearn.Core.Convertors
+@using TopLearn.Core.DTOs
+@using TopLearn.Core.Services.interfaces
+@inject IUserService _userservice
+@{
+    SideBarUserPanelViewModel sideBar = _userservice.GetSideBarUserPanel(User.Identity.Name);
+}
+<aside>
+
+    <div class="avatar-layer">
+        <div class="img-layer">
+            <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+            @if (sideBar.ImageName != "")
+            {
+                <img src="~/images/UserAvatar/@sideBar.ImageName">
+            }
+            else
+            {
+                <img src="~/images/UserAvatar/DefaultPic.jpg">
+            }
+        </div>
+        <div class="detail">
+            <span> @sideBar.UserName </span>
+            <span> عضویت : @sideBar.RegisteredDate.ToShamsi() </span>
+        </div>
+    </div>
+
+    <section>
+        <header><h3> میز کار </h3></header>
+        <div class="inner">
+            <ul>
+                <li><a href="/UserPanel"> مشاهده حساب کابری </a></li>
+                <li><a href=""> ویرایش حساب کابری </a></li>
+                <li><a href=""> تغییر رمز عبور </a></li>
+                <li><a href=""> تنظیمات حساب کاربری </a></li>
+                <li><a asp-action="Logout" asp-controller="Account"> خروج از حساب کاربری </a></li>
+            </ul>
+        </div>
+    </section>
+</aside>

@@ -23,7 +23,7 @@
             </div>
             <script>
                 var delay = 2000; 
-                setTimeout(function(){ window.location ="/"; }, delay);
+                setTimeout(function(){ window.location ="/UserPanel"; }, delay);
             </Script>
         }
         <header><h2> ورود به سایت </h2></header>
@@ -50,8 +50,8 @@
                 <span asp-validation-for="ReMemberMe"></span>
 
                 <div class="link">
-                    <a href=""> <i class="zmdi zmdi-lock"></i> رمز عبور خود را فراموش کرده ام !</a>
-                    <a asp-action="Register" asp-controller="AccountController"> <i class="zmdi zmdi-account"></i> عضویت در سایت </a>
+                    <a asp-action="ForgotPassword" asp-controller="Account"> <i class="zmdi zmdi-lock"></i> رمز عبور خود را فراموش کرده ام !</a>
+                    <a asp-action="Register" asp-controller="Account"> <i class="zmdi zmdi-account"></i> عضویت در سایت </a>
                 </div>
 
                 <input type="submit" class="btn btn-success" value="ورود به سایت" /> </input>
