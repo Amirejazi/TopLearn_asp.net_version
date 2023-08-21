@@ -1,0 +1,36 @@
+﻿@page "{id}"
+@using TopLearn.Core.Convertors
+@model TopLearn.Web.Pages.Admin.Users.DeleteUserModel
+@{
+    ViewData["Title"] = "حذف کاربر";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                حذف کاربر
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    <input type="hidden" name="UserId" value="@ViewData["UserId"].ToString()"/>
+                    <dl class="dl-horizontal">
+                        <dt>نام کاربری : </dt>
+                        <dd>@Model.InformationUserViewModel.UserName</dd>
+                        <dt>ایمیل : </dt>
+                        <dd>@Model.InformationUserViewModel.Email</dd>
+                        <dt>تاریخ عضویت :</dt>
+                        <dd>@Model.InformationUserViewModel.RegisteredDate.ToShamsi()</dd>
+                        <dt>کیف پول :</dt>
+                        <dd>@Model.InformationUserViewModel.Wallet</dd>
+                        <dt></dt>
+                        <dd><input class="btn btn-danger" type="submit" value="حذف"/></dd>
+                    </dl>
+                </form>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+
+</div>

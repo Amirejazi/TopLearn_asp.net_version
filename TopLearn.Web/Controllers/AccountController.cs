@@ -54,7 +54,7 @@ namespace TopLearn.Web.Controllers
                 Email = FixedText.FixEmail(register.Email),
                 ActiveCode = NameGenerator.GenerateUniqCode(),
                 Password = PasswordHelper.EncodePasswordMd5(register.Password),
-                UserAvatar = "",
+                UserAvatar = "Default.jpg",
                 RegisteredDate = DateTime.Now
             };
             _userService.AddUser(user);
@@ -125,7 +125,7 @@ namespace TopLearn.Web.Controllers
         #endregion
 
         #region Logout
-
+        [Route("Logout")]
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

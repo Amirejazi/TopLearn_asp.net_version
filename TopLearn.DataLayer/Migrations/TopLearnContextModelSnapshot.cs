@@ -22,6 +22,70 @@ namespace TopLearn.DataLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Course.CourseGroup", b =>
+                {
+                    b.Property<int>("GroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"));
+
+                    b.Property<string>("GroupTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("ParentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupId");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("CourseGroups");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Permissions.Permission", b =>
+                {
+                    b.Property<int>("PermiossionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PermiossionId"));
+
+                    b.Property<int?>("ParentID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PermissionTitle")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("PermiossionId");
+
+                    b.HasIndex("ParentID");
+
+                    b.ToTable("Permissions");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Permissions.RoleToPermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RoleToPermissions");
+                });
+
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -30,6 +94,9 @@ namespace TopLearn.DataLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
                     b.Property<string>("RoleTitle")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -37,7 +104,7 @@ namespace TopLearn.DataLayer.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.User", b =>
@@ -59,6 +126,9 @@ namespace TopLearn.DataLayer.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
@@ -99,6 +169,103 @@ namespace TopLearn.DataLayer.Migrations
                     b.ToTable("UserToRoles");
                 });
 
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Wallet.Wallet", b =>
+                {
+                    b.Property<int>("WalletId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WalletId"));
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsPay")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("WalletId");
+
+                    b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Wallet.WalletType", b =>
+                {
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeTitle")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("TypeId");
+
+                    b.ToTable("WalletTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            TypeId = 1,
+                            TypeTitle = "واریز"
+                        },
+                        new
+                        {
+                            TypeId = 2,
+                            TypeTitle = "برداشت"
+                        });
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Course.CourseGroup", b =>
+                {
+                    b.HasOne("TopLearn.DataLayer.Entities.Course.CourseGroup", null)
+                        .WithMany("CourseGroups")
+                        .HasForeignKey("ParentId");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Permissions.Permission", b =>
+                {
+                    b.HasOne("TopLearn.DataLayer.Entities.Permissions.Permission", null)
+                        .WithMany("Type")
+                        .HasForeignKey("ParentID");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Permissions.RoleToPermission", b =>
+                {
+                    b.HasOne("TopLearn.DataLayer.Entities.Permissions.Permission", "Permission")
+                        .WithMany("RoleToPermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TopLearn.DataLayer.Entities.User.Role", "Role")
+                        .WithMany("RoleToPermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Permission");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.UserToRole", b =>
                 {
                     b.HasOne("TopLearn.DataLayer.Entities.User.Role", "Role")
@@ -118,14 +285,54 @@ namespace TopLearn.DataLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Wallet.Wallet", b =>
+                {
+                    b.HasOne("TopLearn.DataLayer.Entities.Wallet.WalletType", "WalletType")
+                        .WithMany("Wallets")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TopLearn.DataLayer.Entities.User.User", "User")
+                        .WithMany("wallets")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+
+                    b.Navigation("WalletType");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Course.CourseGroup", b =>
+                {
+                    b.Navigation("CourseGroups");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Permissions.Permission", b =>
+                {
+                    b.Navigation("RoleToPermissions");
+
+                    b.Navigation("Type");
+                });
+
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.Role", b =>
                 {
+                    b.Navigation("RoleToPermissions");
+
                     b.Navigation("UserToRoles");
                 });
 
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.User", b =>
                 {
                     b.Navigation("UserToRoles");
+
+                    b.Navigation("wallets");
+                });
+
+            modelBuilder.Entity("TopLearn.DataLayer.Entities.Wallet.WalletType", b =>
+                {
+                    b.Navigation("Wallets");
                 });
 #pragma warning restore 612, 618
         }

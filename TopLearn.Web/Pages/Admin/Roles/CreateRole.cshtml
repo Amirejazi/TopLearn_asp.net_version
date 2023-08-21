@@ -1,0 +1,86 @@
+﻿@page
+@using TopLearn.DataLayer.Entities.Permissions
+@model TopLearn.Web.Pages.Admin.Roles.CreateRoleModel
+@{
+    ViewData["Title"] = "افزودن نقش";
+    List<Permission> permissions = ViewData["Permissions"] as List<Permission>;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن نقش جدید</h1>
+    </div>
+</div>
+
+<div class="row">
+    <form enctype="multipart/form-data" method="post">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading"> نقش جدید</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>عنوان نقش</label>
+                        <input asp-for="Role.RoleTitle" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="panel-footer ">
+                    <div class="row" style="margin:2px">
+                        <p>
+                            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    دسترسی ها
+                </div>
+                <div class="panel-body">
+                    <ul>
+                        @foreach (var permission in permissions.Where(p => p.ParentID == null))
+                        {
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="SelectedPermission" value="@permission.PermiossionId">@permission.PermissionTitle
+                                    </label>
+                                </div>
+                                @if (permissions.Any(p => p.ParentID == permission.ParentID))
+                                {
+                                    <ul>
+                                        @foreach (var sub in permissions.Where(p => p.ParentID == permission.PermiossionId))
+                                        {
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="SelectedPermission" value="@sub.PermiossionId">@sub.PermissionTitle
+                                                </label>
+                                            </div>
+                                            @if (permissions.Any(p => p.ParentID == sub.ParentID))
+                                            {
+                                                <ul>
+                                                    @foreach (var sub2 in permissions.Where(p => p.ParentID == sub.PermiossionId))
+                                                    {
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input type="checkbox" name="SelectedPermission" value="@sub2.PermiossionId">@sub2.PermissionTitle
+                                                            </label>
+                                                        </div>
+                                                    }
+                                                </ul>
+                                            }
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="panel-footer ">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

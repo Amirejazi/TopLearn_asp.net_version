@@ -1,0 +1,79 @@
+﻿@using TopLearn.Core.Convertors
+@using TopLearn.Core.DTOs
+@model TopLearn.Core.DTOs.ChargeWalletViewModel
+@{
+    ViewData["Title"] = "کیف پول شما";
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page">کیف پول @User.Identity.Name </li>
+        </ul>
+    </nav>
+</div>
+
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <div class="col-md-3 col-sm-4 col-xs-12">
+                    <partial name="_SideBar" />
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-12">
+                    <section class="user-account-content">
+                        <header><h1> کیف پول شما </h1></header>
+                        <div class="inner form-layer">
+                            <form asp-action="Wallet" method="post">
+                                <div class="row">
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="password"><i class="zmdi zmdi-balance-wallet"></i></span>
+                                            <input asp-for="Amount" min="0" type="number" class="form-control" placeholder="مبلغ به تومان" aria-describedby="amount">
+                                        </div>
+                                    </div>
+
+                                    <div class="text-danger" asp-validation-summary="All"></div>
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <button class="btn btn-success">شارژ کیف پول </button>
+                                    </div>
+                                </div>
+                            </form>
+                            @{
+                                List<WalletViewModel> wallets = ViewData["ListWallets"] as List<WalletViewModel>;
+                            }
+                            <hr />
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>مبلغ</th>
+                                    <th>نوع تراکنش</th>
+                                    <th>تاریخ</th>
+                                    <th>شرح</th>
+                                    
+                                </tr>
+                                @foreach (var wallet in wallets)
+                                {
+                                    <tr>
+                                        <th>@wallet.Amount.ToString("#,0 تومان")</th>
+                                        @if(wallet.TypeId == 1)
+                                        {
+                                            <th class="text-success">واریز</th>
+                                        }
+                                        else
+                                        {
+                                            <th class="text-danger">برداشت</th>
+                                        }
+                                        <th>@wallet.DateTime.ToShamsi()</th>
+                                        <th>@wallet.Description</th>
+                                        
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

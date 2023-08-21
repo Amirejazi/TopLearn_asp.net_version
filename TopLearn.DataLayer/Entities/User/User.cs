@@ -42,10 +42,12 @@ namespace TopLearn.DataLayer.Entities.User
         [Display(Name = "تاریخ ثبت نام")]
         public DateTime RegisteredDate { get; set; }
 
+        public bool IsDelete { get; set; }
 
         #region Relations
 
         public List<UserToRole> UserToRoles { get; set; }
+        public List<Wallet.Wallet> wallets { get; set; }
 
         #endregion
 

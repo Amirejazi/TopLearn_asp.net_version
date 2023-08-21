@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\AdminContent\fonts\glyphicons-halflings-regular.svg" />
     <None Include="wwwroot\css\fonts\Material-Design-Iconic-Font.svg" />
     <None Include="wwwroot\css\fonts\Material-Design-Iconic-Font.woff2" />
     <None Include="wwwroot\js\bootstrap.min.js" />
@@ -35,6 +36,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="ZarinPalSandbox" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

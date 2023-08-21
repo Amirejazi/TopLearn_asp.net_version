@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TopLearn.DataLayer.Entities.Course;
+using TopLearn.DataLayer.Entities.Permissions;
 using TopLearn.DataLayer.Entities.User;
+using TopLearn.DataLayer.Entities.Wallet;
 
 namespace TopLearn.DataLayer.Context
 {
@@ -18,17 +21,55 @@ namespace TopLearn.DataLayer.Context
         #region User
 
         public DbSet<User> Users { get; set; }
-        public DbSet<Role> Role { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<UserToRole> UserToRoles { get; set; }
 
         #endregion
 
+        #region Wallet
+
+        public DbSet<Wallet> Wallets { get; set; }
+        public DbSet<WalletType> WalletTypes { get; set; }
+
+        #endregion
+
+        #region Permission
+
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RoleToPermission> RoleToPermissions { get; set; }
+
+        #endregion
+
+        #region Course
+
+        public DbSet<CourseGroup> CourseGroups { get; set; }
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserToRole>().HasKey(t => new { t.UserId, t.RoleId });
+            modelBuilder.Entity<RoleToPermission>().HasKey(t => new { t.RoleId, t.PermissionId });
+            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDelete);
+            modelBuilder.Entity<Role>().HasQueryFilter(r => !r.IsDelete);
+            modelBuilder.Entity<CourseGroup>().HasQueryFilter(cg => !cg.IsDelete);
 
+            #region Seed Data WalletTypes
 
+            modelBuilder.Entity<WalletType>().HasData(
+                new WalletType()
+                {
+                    TypeId = 1,
+                    TypeTitle = "واریز"
+                },
+                new WalletType()
+                {
+                    TypeId = 2,
+                    TypeTitle = "برداشت"
+                }
+            );
+
+            #endregion
             base.OnModelCreating(modelBuilder);
         }
     }

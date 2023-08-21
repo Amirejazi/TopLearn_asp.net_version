@@ -26,6 +26,12 @@
                 setTimeout(function(){ window.location ="/UserPanel"; }, delay);
             </Script>
         }
+        @if(Context.Request.Query["EditProfile"].ToString() =="true")
+        {
+            <div class="alert alert-warning">
+                <p class="help-block">به دلیل ویرایش کردن پروفایل مجدد لاگین کنید! </p>
+            </div>
+        }
         <header><h2> ورود به سایت </h2></header>
 
         <div class="form-layer">

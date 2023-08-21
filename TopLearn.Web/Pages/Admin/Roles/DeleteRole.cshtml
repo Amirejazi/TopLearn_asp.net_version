@@ -1,0 +1,32 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.Admin.Roles.DeleteRoleModel
+@{
+    ViewData["Title"] = "حذف نقش";
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                حذف نقش
+            </div>
+            <div class="panel-body">
+                <form method="post">
+                    <input type="hidden" name="UserId" asp-for="Role.RoleId"/>
+                    <input type="hidden" name="UserId" asp-for="Role.RoleTitle"/>
+                    <dl class="dl-horizontal">
+                        عنوان نقش : 
+                        @Model.Role.RoleTitle
+                        <br />
+                        <br />
+                        <input class="btn btn-danger" type="submit" value="حذف"/>
+                        <input class="btn btn-info" type="submit" value="انصراف"/>
+                    </dl>
+                </form>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+
+</div>
