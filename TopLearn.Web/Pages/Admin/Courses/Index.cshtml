@@ -1,0 +1,31 @@
+﻿@page
+@model TopLearn.Web.Pages.Admin.Courses.IndexModel
+@{
+    ViewData["Title"] = "لیست دوره ها";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">لیست دوره ها</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                لیست دوره های سایت
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div style="margin-bottom:10px">
+                    <a  asp-page="CreateCourse" class="btn btn-success" > افزودن دوره جدید</a>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+

@@ -43,6 +43,10 @@ namespace TopLearn.DataLayer.Context
         #region Course
 
         public DbSet<CourseGroup> CourseGroups { get; set; }
+        public DbSet<CourseLevel> CourseLevels { get; set; }
+        public DbSet<CourseStatus> CourseStatus { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseEpisode> CourseEpisodes { get; set; }
 
         #endregion
 
@@ -53,6 +57,13 @@ namespace TopLearn.DataLayer.Context
             modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDelete);
             modelBuilder.Entity<Role>().HasQueryFilter(r => !r.IsDelete);
             modelBuilder.Entity<CourseGroup>().HasQueryFilter(cg => !cg.IsDelete);
+
+
+            modelBuilder.Entity<Course>()
+                .HasOne<CourseGroup>(f => f.SubGroup)
+                .WithMany(g => g.CoursesForSubGroup)
+                .HasForeignKey(f => f.SubGroupId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             #region Seed Data WalletTypes
 
@@ -70,6 +81,7 @@ namespace TopLearn.DataLayer.Context
             );
 
             #endregion
+
             base.OnModelCreating(modelBuilder);
         }
     }

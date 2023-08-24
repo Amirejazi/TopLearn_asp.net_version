@@ -1,0 +1,135 @@
+﻿@page
+@model TopLearn.Web.Pages.Admin.Courses.CreateCourseModel
+@{
+    ViewData["Title"] = "افزودن دوره";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن دوره جدید</h1>
+    </div>
+</div>
+
+<div class="row">
+    <form enctype="multipart/form-data" method="post">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading"> دوره جدید</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label> عنوان دوره</label>
+                        <input asp-for="Course.CourseTitle" type="text" class="form-control">
+                        <span asp-validation-for="Course.CourseTitle"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>گروه اصلی </label>
+                        <select asp-for="Course.GroupId" asp-items="@(ViewData["Groups"] as SelectList)" class="form-control"></select>
+                        <span asp-validation-for="Course.GroupId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>گروه فرعی </label>
+                        <select asp-for="Course.SubGroupId" asp-items="@(ViewData["SubGroups"] as SelectList)" class="form-control"></select>
+                        <span asp-validation-for="Course.SubGroupId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>مدرس </label>
+                        <select asp-for="Course.TeacherId" asp-items="@(ViewData["Teachers"] as SelectList)" class="form-control"></select>
+                        <span asp-validation-for="Course.SubGroupId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>شرح دوره</label>
+                        <textarea asp-for="Course.Description" rows="6" class="form-control"></textarea>
+                        <span asp-validation-for="Course.Description"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>قیمت دوره</label>
+                        <input asp-for="Course.CoursePrice" type="number" class="form-control">
+                        <span asp-validation-for="Course.CoursePrice"></span>
+                    </div>
+                    <div class="form-group">
+                        <label> فایل دمو دوره</label>
+                        <input name="demoUp" type="file" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label> کلمات کلیدی</label>
+                        <input asp-for="Course.Tags" type="text" class="form-control">
+                        <span asp-validation-for="Course.Tags"></span>
+                        <p class="help-block">کلمات را با - جدا کنید</p>
+                    </div>
+
+                    <div class="row" style="margin:2px">
+                        <p>
+                            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    آواتار کاربر
+                </div>
+                <div class="panel-body">
+                    <img id="imgCourse" class="thumbnail" src="~/images/UserAvatar/Default.jpg" />
+                </div>
+                <div class="panel-footer ">
+                    <div class="form-group">
+                        <label>انتخاب تصویر</label>
+                        <input name="imgCourseUp" type="file" id="imgCourseUp">
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label>سطح دوره </label>
+                        <select asp-for="Course.LevelId" asp-items="@(ViewData["Levels"] as SelectList)" class="form-control"></select>
+                        <span asp-validation-for="Course.LevelId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>وضعیت دوره </label>
+                        <select asp-for="Course.StatusId" asp-items="@(ViewData["Status"] as SelectList)" class="form-control"></select>
+                        <span asp-validation-for="Course.StatusId"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+<script>
+    $("#Course_GroupId").change(function() {
+            $("#Course_SubGroupId").empty();
+            $.getJSON("/home/GetSubGroup/" + $("#Course_GroupId :selected").val(),
+                function(data) {
+
+                    $.each(data,
+                        function() {
+                            $("#Course_SubGroupId").append('<option value=' + this.value + '>' + this.text + '</option>');
+
+                        });
+
+                });
+
+
+        });
+
+        function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imgCourse').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            alert('select a file to see preview');
+            $('#imgCourse').attr('src', '');
+        }
+        }
+
+    $("#imgCourseUp").change(function () {
+        readURL(this);
+    });
+</script>
+}

@@ -14,7 +14,7 @@ namespace TopLearn.Web.Components
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return await Task.FromResult((IViewComponentResult)View("/Views/Components/CourseGroupComponent.cshtml",);
+            return await Task.FromResult((IViewComponentResult)View("/Views/Components/CourseGroupComponent.cshtml", _courseService.getAllGroups()));
         }
     }
 }

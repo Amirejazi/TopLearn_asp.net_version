@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using TopLearn.Core.Services.interfaces;
 using TopLearn.Web.Models;
 
@@ -9,11 +10,13 @@ namespace TopLearn.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private IUserService _userService;
+        private ICourseService _courseService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ICourseService courseService)
         {
             _logger = logger;
             _userService = userService;
+            _courseService = courseService;
         }
 
         public IActionResult Index()
@@ -44,6 +47,22 @@ namespace TopLearn.Web.Controllers
             }
             return View();
         }
+
+        public IActionResult GetSubGroup(int id)
+        {
+            List<SelectListItem> list = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Text = "انتخاب کنید",
+                    Value = ""
+                }
+            };
+
+            list.AddRange(_courseService.GetSubGroupsForManage(id));
+            return Json(new SelectList(list, "Value", "Text"));
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
