@@ -53,6 +53,8 @@ namespace TopLearn.DataLayer.Entities.Course
 
         public string DemoFileName { get; set; }
 
+        public bool IsDelete { get; set; }
+
         #region Relations
 
         [ForeignKey("GroupId")]
@@ -64,8 +66,10 @@ namespace TopLearn.DataLayer.Entities.Course
         [ForeignKey("TeacherId")]
         public User.User User { get; set; }
 
+        [ForeignKey("StatusId")]
         public CourseStatus CourseStatus { get; set; }
 
+        [ForeignKey("LevelId")]
         public CourseLevel CourseLevel { get; set; }
 
         public List<CourseEpisode> CourseEpisodes { get; set; }

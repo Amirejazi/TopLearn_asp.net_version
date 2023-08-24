@@ -36,5 +36,17 @@ namespace TopLearn.Web.Pages.Admin.Courses
             ViewData["Status"] = new SelectList(status, "Value", "Text");
 
         }
+
+        public IActionResult OnPost(IFormFile imgCourseUp, IFormFile demoUp)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            _courseService.AddCourse(Course, imgCourseUp, demoUp);
+
+            return RedirectToPage("Index");
+        }
     }
 }

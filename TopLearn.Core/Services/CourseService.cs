@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using TopLearn.Core.DTOs.Course;
+using TopLearn.Core.Generator;
 using TopLearn.Core.Services.interfaces;
 using TopLearn.DataLayer.Context;
 using TopLearn.DataLayer.Entities.Course;
@@ -71,6 +74,40 @@ namespace TopLearn.Core.Services
             {
                 Value = s.StatusId.ToString(),
                 Text = s.StatusTitle
+            }).ToList();
+        }
+
+        public int AddCourse(Course course, IFormFile imgCourse, IFormFile demoCourse)
+        {
+            course.CreateDate = DateTime.Now;
+            course.CourseImageName = "No_image.png";
+            course.DemoFileName = "No_image.png";
+            if (imgCourse != null)
+            {
+                course.CourseImageName = NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourse.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "images/course/image",
+                    course.CourseImageName);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    imgCourse.CopyTo(stream);
+                }
+            }
+
+            _context.Add(course);
+            _context.SaveChanges();
+            return course.CourseId;
+        }
+
+        public List<ShowCourseForAdminViewModel> GetCoursesForAdmin()
+        {
+            return _context.Courses.Select(c => new ShowCourseForAdminViewModel()
+            {
+                CourseId = c.CourseId,
+                CourseTitle = c.CourseTitle,
+                ImageName = c.CourseImageName,
+                EpisodeCount = c.CourseEpisodes.Count,
             }).ToList();
         }
     }

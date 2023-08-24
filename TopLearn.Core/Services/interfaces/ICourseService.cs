@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using TopLearn.Core.DTOs.Course;
 using TopLearn.DataLayer.Entities.Course;
 
 namespace TopLearn.Core.Services.interfaces
@@ -18,6 +20,13 @@ namespace TopLearn.Core.Services.interfaces
         List<SelectListItem> GetTeachers();
         List<SelectListItem> GetLevels();
         List<SelectListItem> GetStatus();
+
+        #endregion
+
+        #region Course
+
+        int AddCourse(Course course, IFormFile imgCourse, IFormFile demoCourse);
+        List<ShowCourseForAdminViewModel> GetCoursesForAdmin();
 
         #endregion
     }
