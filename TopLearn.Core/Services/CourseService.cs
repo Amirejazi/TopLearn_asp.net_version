@@ -81,7 +81,6 @@ namespace TopLearn.Core.Services
         {
             course.CreateDate = DateTime.Now;
             course.CourseImageName = "No_image.png";
-            course.DemoFileName = "No_image.png";
             if (imgCourse != null)
             {
                 course.CourseImageName = NameGenerator.GenerateUniqCode() + Path.GetExtension(imgCourse.FileName);
@@ -92,6 +91,19 @@ namespace TopLearn.Core.Services
                 using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     imgCourse.CopyTo(stream);
+                }
+            }
+
+            if (demoCourse != null)
+            {
+                course.DemoFileName = NameGenerator.GenerateUniqCode() + Path.GetExtension(demoCourse.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "images/course/demoes",
+                    course.DemoFileName);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    demoCourse.CopyTo(stream);
                 }
             }
 

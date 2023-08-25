@@ -12,7 +12,7 @@ using TopLearn.DataLayer.Context;
 namespace TopLearn.DataLayer.Migrations
 {
     [DbContext(typeof(TopLearnContext))]
-    [Migration("20230824184802_UpdateCourseTable2_Mig")]
+    [Migration("20230824215038_UpdateCourseTable2_Mig")]
     partial class UpdateCourseTable2_Mig
     {
         /// <inheritdoc />

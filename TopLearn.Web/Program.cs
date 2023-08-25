@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using TopLearn.Core.Convertors;
 using TopLearn.Core.Services;
@@ -10,6 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    // Set the limit to 256 MB
+    options.MultipartBodyLengthLimit = 268435456;
+    options.ValueLengthLimit = 268435456;
+    options.MultipartHeadersLengthLimit = 268435456;
+});
+
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = 268435456;
+});
+
 #region Db context
 
 builder.Services.AddDbContext<TopLearnContext>(option =>

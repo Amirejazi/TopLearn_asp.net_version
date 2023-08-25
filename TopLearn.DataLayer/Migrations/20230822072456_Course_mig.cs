@@ -44,7 +44,7 @@ namespace TopLearn.DataLayer.Migrations
                     CourseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GroupId = table.Column<int>(type: "int", nullable: false),
-                    SubGroupId = table.Column<int>(type: "int", nullable: false),
+                    SubGroupId = table.Column<int>(type: "int", nullable: true),
                     TeacherId = table.Column<int>(type: "int", nullable: false),
                     StatusId = table.Column<int>(type: "int", nullable: false),
                     LevelId = table.Column<int>(type: "int", nullable: false),

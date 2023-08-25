@@ -45,6 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\course\demoes\" />
     <Folder Include="wwwroot\images\course\thumb\" />
   </ItemGroup>
 
