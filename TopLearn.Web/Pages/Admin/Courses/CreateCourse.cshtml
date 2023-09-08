@@ -98,7 +98,7 @@
 
 @section Scripts
 {
-<script>
+    <script>
     $("#Course_GroupId").change(function() {
             $("#Course_SubGroupId").empty();
             $.getJSON("/home/GetSubGroup/" + $("#Course_GroupId :selected").val(),
@@ -132,4 +132,13 @@
         readURL(this);
     });
 </script>
+
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+<script>
+        CKEDITOR.replace('Course_Description', {
+            customConfig: '/js/config.js'
+    });
+</script>
+
 }
