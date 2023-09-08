@@ -1,0 +1,54 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.Admin.Courses.CreateEpisodeModel
+@{
+    ViewData["Title"] = "افزودن قسمت";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن قسمت جدید</h1>
+    </div>
+</div>
+
+<div class="row">
+    <form enctype="multipart/form-data" method="post">
+        <input type="hidden" asp-for="CourseEpisode.CourseId"/>
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading"> اطلاعات قسمت جدید</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label> عنوان قسمت</label>
+                        <input asp-for="CourseEpisode.EpisodeTitle" type="text" class="form-control">
+                        <span asp-validation-for="CourseEpisode.EpisodeTitle"></span>
+                    </div>
+                    <div class="form-group">
+                        <label> زمان قسمت</label>
+                        <input asp-for="CourseEpisode.EpisodeTime" type="time" class="form-control">
+                        <span asp-validation-for="CourseEpisode.EpisodeTime"></span>
+                    </div>
+                    <div class="form-group">
+                        <label> فایل قسمت</label>
+                        <input type="file" class="form-control" name="fileEpisode">
+                        <div class="text-danger"> فایل اجباری است</div>
+                        @if (ViewData["IsExist"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                 نام فایل معتبر نیست , لطفا تغییر دهید
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label> رایگان است <input asp-for="CourseEpisode.IsFree" type="checkbox"></label>
+
+                    </div>
+                    <div class="row" style="margin:2px">
+                        <p>
+                            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
