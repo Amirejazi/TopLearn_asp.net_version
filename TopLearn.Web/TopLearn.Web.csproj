@@ -46,7 +46,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\course\demoes\" />
-    <Folder Include="wwwroot\images\course\thumb\" />
+    <Folder Include="wwwroot\images\CKeditorUploaded\" />
+    <Folder Include="wwwroot\coursefiles\" />
   </ItemGroup>
 
 </Project>
