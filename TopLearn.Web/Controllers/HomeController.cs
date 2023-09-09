@@ -22,8 +22,7 @@ namespace TopLearn.Web.Controllers
 
         public IActionResult Index()
         {
-            List<ShowCourseListItemViewModel> J = _courseService.GetCourses();
-            return View(J);
+            return View(_courseService.GetCourses());
         }
 
         [Route("OnlinePayment/{id}")]

@@ -200,8 +200,8 @@ namespace TopLearn.Core.Services
             _context.SaveChanges();
         }
 
-        public List<ShowCourseListItemViewModel> GetCourses(int pageId = 1, string filter = "", string getType = "all", string orderByType = "date",
-            int startPrice = 0, int endPrice = 0, List<int> selectedGroup = null, int take=8)
+        public Tuple<List<ShowCourseListItemViewModel>, int> GetCourses(int pageId = 1, string filter = "", string getType = "all", string orderByType = "date",
+            int startPrice = 0, int endPrice = 0, List<int> selectedGroup = null, int take = 8)
         {
             IQueryable<Course> result = _context.Courses;
 
@@ -215,29 +215,29 @@ namespace TopLearn.Core.Services
                 case "all":
                     break;
                 case "buy":
-                {
-                    result = result.Where(c => c.CoursePrice!=0);
-                    break;
-                }
+                    {
+                        result = result.Where(c => c.CoursePrice != 0);
+                        break;
+                    }
                 case "free":
-                {
-                    result = result.Where(c => c.CoursePrice == 0);
-                    break;
-                }
+                    {
+                        result = result.Where(c => c.CoursePrice == 0);
+                        break;
+                    }
             }
 
             switch (orderByType)
             {
                 case "date":
-                {
-                    result = result.OrderByDescending(c => c.CreateDate);
-                    break;
-                }
+                    {
+                        result = result.OrderByDescending(c => c.CreateDate);
+                        break;
+                    }
                 case "updatedate":
-                {
-                    result = result.OrderByDescending(c => c.UpdateDate);
-                    break;
-                }
+                    {
+                        result = result.OrderByDescending(c => c.UpdateDate);
+                        break;
+                    }
             }
 
             if (startPrice > 0)
@@ -250,8 +250,17 @@ namespace TopLearn.Core.Services
                 result = result.Where(c => c.CoursePrice < endPrice);
             }
 
-            int skip = (pageId-1) * take;
-            return result.Include(c => c.CourseEpisodes).Select(c => new ShowCourseListItemViewModel()
+            if (selectedGroup != null && selectedGroup.Any())
+            {
+                foreach (int groupId in selectedGroup)
+                {
+                    result = result.Where(c => c.GroupId == groupId || c.SubGroupId == groupId);
+                }
+            }
+            int skip = (pageId - 1) * take;
+            int pageCount = result.Count() / take;
+
+            var output = result.Include(c => c.CourseEpisodes).Select(c => new ShowCourseListItemViewModel()
             {
                 CourseId = c.CourseId,
                 Title = c.CourseTitle,
@@ -260,6 +269,7 @@ namespace TopLearn.Core.Services
                 //TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
             }).Skip(skip).Take(take).ToList();
 
+            return Tuple.Create(output, pageCount);
         }
 
 

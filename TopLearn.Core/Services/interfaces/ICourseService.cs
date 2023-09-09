@@ -29,7 +29,7 @@ namespace TopLearn.Core.Services.interfaces
         List<ShowCourseForAdminViewModel> GetCoursesForAdmin();
         Course GetCourseById(int id);
         void UpdateCourse(Course course, IFormFile imgCourse, IFormFile demoCourse);
-        List<ShowCourseListItemViewModel> GetCourses(int pageId = 1, string filter = "", string getType = "all", string orderByType="date", int startPrice = 0, int endPrice = 0, List<int> selectedGroup = null, int take=8);
+        Tuple<List<ShowCourseListItemViewModel>, int> GetCourses(int pageId = 1, string filter = "", string getType = "all", string orderByType="date", int startPrice = 0, int endPrice = 0, List<int> selectedGroup = null, int take=8);
 
         #endregion
 
