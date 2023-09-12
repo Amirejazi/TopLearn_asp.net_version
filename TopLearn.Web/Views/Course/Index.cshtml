@@ -22,7 +22,7 @@
             <div class="top-bar">
 
                 <header>
-                    <h1> دوره های <span> برنامه نویسی وب </span> </h1> <span> 123 دوره </span>
+                    <h1> دوره های <span> برنامه نویسی وب </span> </h1> <span> @(Model.Item1.Count) دوره </span>
                 </header>
 
                 <div class="row">
@@ -115,12 +115,11 @@
                 </aside>
 
                 <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
-
                     <section class="terms-items">
                         <div class="row">
                             @foreach (var item in Model.Item1)
                             {
-                                <partial name="_BoxCourse" model="@item" />
+                                <partial name="_BoxCourse2" model="@item"/>
                             }
                         </div>
 

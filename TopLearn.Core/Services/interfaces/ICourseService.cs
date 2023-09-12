@@ -40,6 +40,7 @@ namespace TopLearn.Core.Services.interfaces
         bool CheckExistFile(string fileName);
         CourseEpisode GetEpisodeById(int episodeId);
         void EditEpisode(CourseEpisode courseEpisode, IFormFile episodeFile);
+        Course GetCourseForShow(int courseId);
 
         #endregion
     }

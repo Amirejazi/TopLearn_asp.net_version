@@ -110,6 +110,10 @@ namespace TopLearn.Web.Controllers
             HttpContext.SignInAsync(principal, properties);
 
             ViewData["IsSuccess"] = true;
+            //if (ReturnUrl != "/")
+            //{
+            //    return Redirect(ReturnUrl);
+            //}
             return View(login);
         }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TopLearn.DataLayer.Entities.Course;
+using TopLearn.DataLayer.Entities.Order;
 using TopLearn.DataLayer.Entities.Permissions;
 using TopLearn.DataLayer.Entities.User;
 using TopLearn.DataLayer.Entities.Wallet;
@@ -47,6 +48,14 @@ namespace TopLearn.DataLayer.Context
         public DbSet<CourseStatus> CourseStatus { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseEpisode> CourseEpisodes { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+
+        #endregion
+
+        #region Order
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         #endregion
 
@@ -65,6 +74,13 @@ namespace TopLearn.DataLayer.Context
                 .WithMany(g => g.CoursesForSubGroup)
                 .HasForeignKey(f => f.SubGroupId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetForeignKeys())
+                .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+
+            foreach (var fk in cascadeFKs)
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
 
             #region Seed Data WalletTypes
 
