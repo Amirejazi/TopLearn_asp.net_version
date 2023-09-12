@@ -65,7 +65,10 @@
                                             <th class="text-danger">برداشت</th>
                                         }
                                         <th>@wallet.DateTime.ToShamsi()</th>
-                                        <th>@wallet.Description</th>
+                                        @{
+                                            string tagHref = $"<a href='/UserPanel/MyOrder/ShowOrder/{wallet.Description.Replace("فاکتور شما #", "")}'>#</a>";
+                                        }
+                                        <th>@Html.Raw(wallet.Description.Replace("#", tagHref))</th>
                                         
                                     </tr>
                                 }

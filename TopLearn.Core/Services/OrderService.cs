@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TopLearn.Core.DTOs.Order;
 using TopLearn.Core.Services.interfaces;
 using TopLearn.DataLayer.Context;
 using TopLearn.DataLayer.Entities.Course;
 using TopLearn.DataLayer.Entities.Order;
+using TopLearn.DataLayer.Entities.User;
 using TopLearn.DataLayer.Entities.Wallet;
 
 namespace TopLearn.Core.Services
@@ -96,6 +98,17 @@ namespace TopLearn.Core.Services
                 .FirstOrDefault(o => o.UserId == userId && o.OrderId == orderId);
         }
 
+        public Order GetOrdeById(int orderId)
+        {
+            return _context.Orders.Find(orderId);
+        }
+
+        public void UpdateOrder(Order order)
+        {
+            _context.Orders.Update(order);
+            _context.SaveChanges();
+        }
+
         public bool FinlayOrder(string userName, int orderId)
         {
             int userId = _userService.GetUserIdByUserName(userName);
@@ -132,6 +145,63 @@ namespace TopLearn.Core.Services
 
             return false;
 
+        }
+
+        public List<Order> getUserOrders(string userName)
+        {
+            int userId = _userService.GetUserIdByUserName(userName);
+
+            return _context.Orders.Where(o => o.UserId == userId).ToList();
+        }
+
+        public DiscountUseType UseDiscount(int orderId, string code)
+        {
+            var discount = _context.Discounts.SingleOrDefault(d => d.DiscountCode == code);
+
+            if (discount == null)
+            {
+                return DiscountUseType.NotFound;
+            }
+
+            if (discount.StartDate != null && discount.StartDate < DateTime.Now)
+            {
+                return DiscountUseType.ExpiredDate;
+            }
+
+            if (discount.EndDate != null && discount.EndDate > DateTime.Now)
+            {
+                return DiscountUseType.ExpiredDate;
+            }
+
+            if (discount.UsableCount != null && discount.UsableCount < 1)
+            {
+                return DiscountUseType.Finished;
+            }
+
+            var order = GetOrdeById(orderId);
+
+            if (_context.UserDiscountCodes.Any(c => c.UserId == order.UserId && c.DiscountId == discount.DiscountId))
+            {
+                return DiscountUseType.UserUsed;
+            }
+
+            order.OrderSum = order.OrderSum - (order.OrderSum * discount.DiscountPercent / 100);
+            UpdateOrder(order);
+
+            if (discount.UsableCount != null)
+            {
+                discount.UsableCount -= 1;
+            }
+
+            _context.Discounts.Update(discount);
+            _context.UserDiscountCodes.Add(new UserDiscountCode()
+            {
+                UserId = order.UserId,
+                DiscountId = discount.DiscountId,
+            });
+            _context.SaveChanges();
+
+            return DiscountUseType.Success;
         }
     }
 }

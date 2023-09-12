@@ -24,6 +24,7 @@ namespace TopLearn.DataLayer.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserToRole> UserToRoles { get; set; }
+        public DbSet<UserDiscountCode> UserDiscountCodes { get; set; }
 
         #endregion
 
@@ -56,6 +57,7 @@ namespace TopLearn.DataLayer.Context
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
 
         #endregion
 

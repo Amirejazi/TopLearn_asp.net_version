@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TopLearn.DataLayer.Context;
 
@@ -11,9 +12,11 @@ using TopLearn.DataLayer.Context;
 namespace TopLearn.DataLayer.Migrations
 {
     [DbContext(typeof(TopLearnContext))]
-    partial class TopLearnContextModelSnapshot : ModelSnapshot
+    [Migration("20230912115602_DiscountMig2")]
+    partial class DiscountMig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -406,29 +409,6 @@ namespace TopLearn.DataLayer.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TopLearn.DataLayer.Entities.User.UserDiscountCode", b =>
-                {
-                    b.Property<int>("UD_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UD_Id"));
-
-                    b.Property<int>("DiscountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UD_Id");
-
-                    b.HasIndex("DiscountId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserDiscountCodes");
-                });
-
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.UserToRole", b =>
                 {
                     b.Property<int>("UserId")
@@ -644,25 +624,6 @@ namespace TopLearn.DataLayer.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TopLearn.DataLayer.Entities.User.UserDiscountCode", b =>
-                {
-                    b.HasOne("TopLearn.DataLayer.Entities.Order.Discount", "Discount")
-                        .WithMany("UserDiscountCodes")
-                        .HasForeignKey("DiscountId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TopLearn.DataLayer.Entities.User.User", "User")
-                        .WithMany("UserDiscountCodes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Discount");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TopLearn.DataLayer.Entities.User.UserToRole", b =>
                 {
                     b.HasOne("TopLearn.DataLayer.Entities.User.Role", "Role")
@@ -729,11 +690,6 @@ namespace TopLearn.DataLayer.Migrations
                     b.Navigation("Courses");
                 });
 
-            modelBuilder.Entity("TopLearn.DataLayer.Entities.Order.Discount", b =>
-                {
-                    b.Navigation("UserDiscountCodes");
-                });
-
             modelBuilder.Entity("TopLearn.DataLayer.Entities.Order.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -760,8 +716,6 @@ namespace TopLearn.DataLayer.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("UserCourses");
-
-                    b.Navigation("UserDiscountCodes");
 
                     b.Navigation("UserToRoles");
 

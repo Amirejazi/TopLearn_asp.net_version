@@ -3,7 +3,8 @@
 @inject IUserService _UserService
 @{
     ViewData["Title"] = "فاکتور شما";
-    int sumOrder = Model.OrderDetails.Sum(od => od.Price * od.Count);
+    int sumOrder = Model.OrderSum;
+    string discountType = ViewBag.typeDiscount.ToString();
 }
 
 <div class="container">
@@ -59,14 +60,59 @@
                                         <td colspan="3" class="text-left">کد تخفیف</td>
                                         <td>
                                             <div class="row">
-                                                <div class="col-md-9 ">
-                                                    <input type="text" class="form-control"/>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <button type="submit" class="btn btn-primary btn-block"> اعمال</button>
-                                                </div>
-
+                                                <form action="/UserPanel/MyOrder/UseDiscount" method="post">
+                                                    <input type="hidden" name="orderId" value="@Model.OrderId"/>
+                                                    <div class="col-md-9 ">
+                                                        <input type="text" name="code" class="form-control"/>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <button type="submit" class="btn btn-primary btn-block"> اعمال</button>
+                                                    </div>
+                                                </form>
                                             </div>
+                                            <br/>
+
+                                            @if (discountType != "")
+                                            {
+                                                switch (discountType)
+                                                {
+                                                    case "Success":
+                                                    {
+                                                        <div class="alert alert-success">
+                                                            کد تخفیف با موفقیت اعمال شد:)
+                                                        </div>
+                                                        break;
+                                                    }
+                                                    case "NotFound":
+                                                    {
+                                                        <div class="alert alert-danger">
+                                                            کد تخفیف نادرست است
+                                                        </div>
+                                                        break;
+                                                    }
+                                                    case "ExpiredDate":
+                                                    {
+                                                        <div class="alert alert-danger">
+                                                            کد تخفیف منفضی شده است
+                                                        </div>
+                                                        break;
+                                                    }
+                                                    case "Finished":
+                                                    {
+                                                        <div class="alert alert-danger">
+                                                            تعداد استفاده از این کد تمام شده است
+                                                        </div>
+                                                        break;
+                                                    }
+                                                    case "UserUsed":
+                                                    {
+                                                        <div class="alert alert-danger">
+                                                             این کد تخفیف قبلا توسط شما استفاده شده است
+                                                        </div>
+                                                        break;
+                                                    }
+                                                }
+                                            }
                                         </td>
                                     </tr>
                                 }
