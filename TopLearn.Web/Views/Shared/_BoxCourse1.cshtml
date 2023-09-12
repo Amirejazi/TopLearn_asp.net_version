@@ -1,0 +1,10 @@
+﻿@model TopLearn.Core.DTOs.Course.ShowCourseListItemViewModel
+
+<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
+    <article>
+        <a asp-action="ShowCourse" asp-controller="Course" asp-route-id="@Model.CourseId" class="img-layer"><img style="height:180px" src="~/images/course/image/@Model.ImageName"></a>
+        <h2><a asp-action="ShowCourse" asp-controller="Course" asp-route-id="@Model.CourseId"> @Model.Title </a></h2>
+        <span> @(Model.Price==0?"رایگان": Model.Price.ToString("#,0")) </span>
+        <i>@Model.TotalTime</i>
+    </article>
+</div>
