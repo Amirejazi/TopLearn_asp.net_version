@@ -1,0 +1,91 @@
+﻿@page "{handler?}"
+@model TopLearn.Web.Pages.Admin.Discounts.CreateDiscountModel
+@{
+    ViewData["Title"] = "افزودن کد تخفیف";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">افزودن کد تخفیف جدید</h1>
+    </div>
+</div>
+
+<div class="row">
+    <form enctype="multipart/form-data" method="post">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading"> کد تخفیف جدید</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>کد تخفیف</label>
+                        <input asp-for="Discount.DiscountCode" type="text" class="form-control">
+                        <div id="alertCode" class="alert alert-danger" style="display: none">
+                            <p class="text-muted">
+                                کد وارد شده معتبر نمی باشد!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>درصد تخفیف</label>
+                        <input asp-for="Discount.DiscountPercent" type="number" min="0" max="100" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>تعداد استفاده</label>
+                        <input asp-for="Discount.UsableCount" type="number" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ شروع استفاده</label>
+                        <input id="startDate" name="startDate">
+                    </div>
+                    <div class="form-group">
+                        <label>تاریخ پایان استفاده</label>
+                        <input id="endDate" name="endDate">
+                    </div>
+                </div>
+                <div class="panel-footer ">
+                    <div class="row" style="margin:2px">
+                        <p>
+                            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success" />
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <link href="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.all.min.js" rel="stylesheet">
+    <link href="https://kendo.cdn.telerik.com/themes/6.7.0/default/default-main.css" rel="stylesheet" />
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/jquery.min.js"></script>
+    <script src="~/js/kendo.all.min.js"></script>
+    
+    <script>
+        $("#startDate").kendoDatePicker().kendoDatePicker({
+            culture:"de-DE",
+            value: new Date()
+        });
+        $("#endDate").kendoDatePicker().kendoDatePicker({
+            culture:"de-DE",
+            value: new Date()
+        });
+    </script>
+    
+    <script>
+        $("#Discount_DiscountCode").blur(function() {
+            $.ajax({
+                type: "get",
+                url: "/Admin/Discounts/Creatediscount/Checkcode?code=" + $("#Discount_DiscountCode").val(),
+            }).done(function(res) {
+                if (res === "True") {
+                    $("#alertCode").show();
+                } 
+                else {
+                    $("#alertCode").hide();
+                }
+            });
+        });
+    </script>
+}
