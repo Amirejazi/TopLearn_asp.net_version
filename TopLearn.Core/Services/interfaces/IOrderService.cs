@@ -17,11 +17,16 @@ namespace TopLearn.Core.Services.interfaces
         void UpdateOrder(Order order);
         bool FinlayOrder(string userName, int orderId);
         List<Order> getUserOrders(string userName);
+        bool IsUserInCourse(string userName, int courseId);
 
         #region Discount
 
         DiscountUseType UseDiscount(int orderId, string code);
-
+        void AddDiscount(Discount discount);
+        List<Discount> GetAllDiscount();
+        Discount GetDiscountById(int discountId);
+        void UpdateDiscount(Discount discount);
+        bool IsExistCode(string code);
         #endregion
     }
 }

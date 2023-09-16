@@ -154,6 +154,12 @@ namespace TopLearn.Core.Services
             return _context.Orders.Where(o => o.UserId == userId).ToList();
         }
 
+        public bool IsUserInCourse(string userName, int courseId)
+        {
+            int userId = _userService.GetUserIdByUserName(userName);
+            return _context.UserCourses.Any(uc => uc.UserId==userId && uc.CourseId==courseId);
+        }
+
         public DiscountUseType UseDiscount(int orderId, string code)
         {
             var discount = _context.Discounts.SingleOrDefault(d => d.DiscountCode == code);
@@ -202,6 +208,33 @@ namespace TopLearn.Core.Services
             _context.SaveChanges();
 
             return DiscountUseType.Success;
+        }
+
+        public void AddDiscount(Discount discount)
+        {
+            _context.Discounts.Add(discount);
+            _context.SaveChanges();
+        }
+
+        public List<Discount> GetAllDiscount()
+        {
+            return _context.Discounts.ToList();
+        }
+
+        public Discount GetDiscountById(int discountId)
+        {
+            return _context.Discounts.Find(discountId);
+        }
+
+        public void UpdateDiscount(Discount discount)
+        {
+            _context.Discounts.Update(discount);
+            _context.SaveChanges();
+        }
+
+        public bool IsExistCode(string code)
+        {
+            return _context.Discounts.Any(d => d.DiscountCode == code);
         }
     }
 }
