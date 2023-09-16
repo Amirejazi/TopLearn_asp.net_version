@@ -13,10 +13,13 @@ namespace TopLearn.DataLayer.Entities.Order
         [Key]
         public int DiscountId { get; set; }
 
-        [Required] [MaxLength(150)]
+        [Display(Name ="کد تخفیف")]
+        [Required(ErrorMessage ="لطفا {0} را وارد کنید")]
+        [MaxLength(150)]
         public string DiscountCode { get; set; }
 
-        [Required]
+        [Display(Name = "درصد تخفیف")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int DiscountPercent { get; set; }
 
         public int? UsableCount { get; set; }
