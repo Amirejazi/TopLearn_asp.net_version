@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using TopLearn.Core.Services.interfaces
+@inject IPermissionService _PermissionService
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -81,41 +83,70 @@
                         </li>
                         <li class="">
                             <a href="#"><i class="fa fa-users "></i>  کاربران <span class="fa arrow" style="margin-left:4px"></span> </a>
-                            <ul class="nav nav-second-level collapse in" style="height: auto;">
+                            <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
                                     <a href="/Admin/Users">لیست کاربران</a>
                                 </li>
                                 <li>
-                                    <a asp-page="ListDeletedUsers">لیست کاربران حذف شده</a>
+                                    <a href="/Admin/Users/ListDeletedUsers">لیست کاربران حذف شده</a>
                                 </li>
                                 <li>
-                                    <a asp-page="CreateUser">افزودن کاربر</a>
+                                    <a href="/Admin/Users/CreateUser">افزودن کاربر</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li class="">
                             <a href="#"><i class="fa fa-users "></i> نقش ها <span class="fa arrow" style="margin-left:4px"></span> </a>
-                            <ul class="nav nav-second-level collapse in" style="height: auto;">
+                            <ul class="nav nav-second-level collapse" style="height: auto;">
                                 <li>
                                     <a href="/Admin/Roles">لیست نقش ها</a>
                                 </li>
                                 <li>
-                                    <a asp-page="ListDeletedUsers">لیست کاربران حذف شده</a>
-                                </li>
-                                <li>
-                                    <a asp-page="CreateRole">افزودن نقش</a>
+                                    <a href="/Admin/Roles/CreateRole">افزودن نقش</a>
                                 </li>
                             </ul>
-                            <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> دسترسی ها</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> کاربران</a>
-                            
-                        </li>
+                       @* @if (_PermissionService.CheckPermission(2, User.Identity.Name))
+                        {*@
+                            <li class="">
+                                <a href="#"><i class="fa fa-users "></i> مدیریت دوره ها <span class="fa arrow" style="margin-left:4px"></span> </a>
+                                <ul class="nav nav-second-level collapse" style="height: auto;">
+                                    <li>
+                                        <a href="/Admin/Courses"> دوره ها</a>
+                                    </li>
+                                    <li>
+                                        <a herf="/Admin/courses/AddCourse">افزودن دوره</a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                        @*}*@
+                       <li class="">
+                           <a href="#"><i class="fa fa-users "></i> مدیریت تخفیف ها <span class="fa arrow" style="margin-left:4px"></span> </a>
+                           <ul class="nav nav-second-level collapse " style="height: auto;">
+                               <li>
+                                   <a href="/Admin/Discounts"> تخفیف ها</a>
+                               </li>
+                               <li>
+                                   <a herf="/Admin/Discounts/CreateDiscount">افزودن تخفیف</a>
+                               </li>
+                                
+                           </ul>
+                       </li>
+                       <li class="">
+                           <a href="#"><i class="fa fa-users "></i> مدیریت گروه ها <span class="fa arrow" style="margin-left:4px"></span> </a>
+                           <ul class="nav nav-second-level collapse " style="height: auto;">
+                               <li>
+                                   <a href="/Admin/CourseGroups"> گروه ها</a>
+                               </li>
+                               <li>
+                                   <a herf="/Admin/CourseGroups/CreateGroup">افزودن گروه</a>
+                               </li>
+                                
+                           </ul>
+                           <!-- /.nav-second-level -->
+                       </li>
                         
                     </ul>
                     <!-- /#side-menu -->

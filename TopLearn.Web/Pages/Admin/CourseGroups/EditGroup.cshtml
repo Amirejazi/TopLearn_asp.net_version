@@ -1,0 +1,38 @@
+﻿@page "{id}"
+@model TopLearn.Web.Pages.Admin.CourseGroups.EditGroupModel
+@{
+    ViewData["Title"] = "ویرایش گروه دوره ها";;
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">ویرایش گروه</h1>
+    </div>
+</div>
+
+<div class="row">
+    <form enctype="multipart/form-data" method="post">
+        <input type="hidden" asp-for="CourseGroup.ParentId"/>
+        <input type="hidden" asp-for="CourseGroup.GroupId"/>
+        <div class="col-md-10">
+            <div class="panel panel-info">
+                <div class="panel-heading"> ویرایش گروه </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>عنوان گروه</label>
+                        <input asp-for="CourseGroup.GroupTitle" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="panel-footer ">
+                    <div class="row" style="margin:2px">
+                        <p>
+                            <input type="submit" value="ذخیره اطلاعات" class="btn btn-success"/>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+

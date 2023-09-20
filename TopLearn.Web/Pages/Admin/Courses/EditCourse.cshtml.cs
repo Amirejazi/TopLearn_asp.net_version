@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using TopLearn.Core.Services.interfaces;
@@ -25,8 +25,15 @@ namespace TopLearn.Web.Pages.Admin.Courses
             var groups = _courseService.GetGroupsForManage();
             ViewData["Groups"] = new SelectList(groups, "Value", "Text", Course.GroupId);
 
-            var subGroups = _courseService.GetSubGroupsForManage(int.Parse(groups.First().Value));
-            ViewData["SubGroups"] = new SelectList(subGroups, "Value", "Text", Course.SubGroupId??0);
+            List<SelectListItem> subGroups = new List<SelectListItem>()
+            {
+                new SelectListItem(){Text = "انتخاب کنید", Value = ""},
+            };
+            subGroups.AddRange(_courseService.GetSubGroupsForManage(Course.GroupId));
+            string selectedSubGroup = null;
+            if (Course.SubGroup != null)
+                selectedSubGroup = Course.SubGroup.ToString();
+            ViewData["SubGroups"] = new SelectList(subGroups, "Value", "Text", selectedSubGroup);
 
             var teachers = _courseService.GetTeachers();
             ViewData["Teachers"] = new SelectList(teachers, "Value", "Text", Course.TeacherId);
