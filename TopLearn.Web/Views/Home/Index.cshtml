@@ -1,4 +1,5 @@
-﻿@model Tuple<List<TopLearn.Core.DTOs.Course.ShowCourseListItemViewModel>, int>
+﻿@using TopLearn.Core.DTOs.Course
+@model Tuple<List<TopLearn.Core.DTOs.Course.ShowCourseListItemViewModel>, int>
 @{
     ViewData["Title"] = "خانه";
 }
@@ -36,93 +37,22 @@
         </section>
 
         <hr>
-
+        @{
+            List<ShowCourseListItemViewModel> popularCourses = ViewBag.PopularCourses as List<ShowCourseListItemViewModel>;
+        }
         <section class="terms-items">
             <header>
                 <h2> دوره های محبوب تاپ لرن </h2>
                 <a href=""> مشاهده همه دوره ها </a>
             </header>
             <div class="row">
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/1.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/2.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/3.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> 150.000 تومان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/4.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/5.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> 15.000 تومان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/6.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> رایگان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/7.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> 20.000 تومان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
-                <!-- col -->
-                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 term-col">
-                    <article>
-                        <a href="" class="img-layer"><img src="~/images/pic/8.jpg"></a>
-                        <h2><a href=""> آموزش متریال دیاین در زامارین </a></h2>
-                        <span> 75.000 تومان </span>
-                        <i>1:52:32</i>
-                    </article>
-                </div>
-                <!-- /col -->
+                @if (popularCourses != null)
+                {
+                    @foreach (var popular in popularCourses)
+                    {
+                        <partial name="_BoxCourse1" model="@popular"/>
+                    }
+                }
             </div>
         </section>
     </div>

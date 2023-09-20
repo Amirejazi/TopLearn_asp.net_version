@@ -61,6 +61,7 @@ namespace TopLearn.Core.Services
                 {
                     orderDetail.Count += 1;
                     _context.OrderDetails.Update(orderDetail);
+                    _context.SaveChanges();
                 }
                 else
                 {
@@ -85,7 +86,7 @@ namespace TopLearn.Core.Services
         public void UpdatePriceOrder(int orderId)
         {
             var order = _context.Orders.Find(orderId);
-            order.OrderSum = _context.OrderDetails.Where(o => o.OrderId == order.OrderId).Sum(o => o.Price);
+            order.OrderSum = _context.OrderDetails.Where(o => o.OrderId == order.OrderId).Sum(o => o.Price * o.Count);
             _context.Orders.Update(order);
             _context.SaveChanges();
         }

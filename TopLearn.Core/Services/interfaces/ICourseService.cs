@@ -15,12 +15,14 @@ namespace TopLearn.Core.Services.interfaces
         #region Group
 
         List<CourseGroup> getAllGroups();
+        CourseGroup GetGroupById(int groupId);
         List<SelectListItem> GetGroupsForManage();
         List<SelectListItem> GetSubGroupsForManage(int groupId);
         List<SelectListItem> GetTeachers();
         List<SelectListItem> GetLevels();
         List<SelectListItem> GetStatus();
-
+        void AddGroup(CourseGroup group);
+        void UpdateGroup(CourseGroup group);
         #endregion
 
         #region Course
@@ -30,6 +32,7 @@ namespace TopLearn.Core.Services.interfaces
         Course GetCourseById(int id);
         void UpdateCourse(Course course, IFormFile imgCourse, IFormFile demoCourse);
         Tuple<List<ShowCourseListItemViewModel>, int> GetCourses(int pageId = 1, string filter = "", string getType = "all", string orderByType="date", int startPrice = 0, int endPrice = 0, List<int> selectedGroup = null, int take=8);
+        List<ShowCourseListItemViewModel> GetPopularCourse();
 
         #endregion
 
@@ -41,6 +44,13 @@ namespace TopLearn.Core.Services.interfaces
         CourseEpisode GetEpisodeById(int episodeId);
         void EditEpisode(CourseEpisode courseEpisode, IFormFile episodeFile);
         Course GetCourseForShow(int courseId);
+
+        #endregion
+
+        #region Comments
+
+        void AddComment(CourseComment comment);
+        Tuple<List<CourseComment>, int> getCourseComments(int courseId, int pageId=1);
 
         #endregion
     }

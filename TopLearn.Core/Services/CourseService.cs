@@ -27,7 +27,12 @@ namespace TopLearn.Core.Services
 
         public List<CourseGroup> getAllGroups()
         {
-            return _context.CourseGroups.ToList();
+            return _context.CourseGroups.Include(c=> c.CourseGroups).ToList();
+        }
+
+        public CourseGroup GetGroupById(int groupId)
+        {
+            return _context.CourseGroups.Find(groupId);
         }
 
         public List<SelectListItem> GetGroupsForManage()
@@ -77,6 +82,18 @@ namespace TopLearn.Core.Services
                 Value = s.StatusId.ToString(),
                 Text = s.StatusTitle
             }).ToList();
+        }
+
+        public void AddGroup(CourseGroup group)
+        {
+            _context.CourseGroups.Add(group);
+            _context.SaveChanges();
+        }
+
+        public void UpdateGroup(CourseGroup group)
+        {
+            _context.CourseGroups.Update(group);
+            _context.SaveChanges();
         }
 
         public int AddCourse(Course course, IFormFile imgCourse, IFormFile demoCourse)
@@ -195,6 +212,10 @@ namespace TopLearn.Core.Services
                     demoCourse.CopyTo(stream);
                 }
             }
+            else
+            {
+                course.DemoFileName = null;
+            }
 
             _context.Update(course);
             _context.SaveChanges();
@@ -272,6 +293,23 @@ namespace TopLearn.Core.Services
             return Tuple.Create(output, pageCount);
         }
 
+        public List<ShowCourseListItemViewModel> GetPopularCourse()
+        {
+            return _context.Courses.Include(c => c.OrderDetails)
+                .Where(c=>c.OrderDetails.Any())
+                .OrderByDescending(c=> c.OrderDetails.Count)
+                .Take(8)
+                .Select(c => new ShowCourseListItemViewModel()
+                {
+                    CourseId = c.CourseId,
+                    ImageName = c.CourseImageName,
+                    Price = c.CoursePrice,
+                    Title = c.CourseTitle,
+                    //TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
+                })
+                .ToList();
+        }
+
 
         public List<CourseEpisode> GetListEpisodeCourse(int courseId)
         {
@@ -336,6 +374,24 @@ namespace TopLearn.Core.Services
                 .Include(c => c.User)
                 .Include(c => c.UserCourses)
                 .FirstOrDefault(c => c.CourseId == courseId);
+        }
+
+        public void AddComment(CourseComment comment)
+        {
+            _context.CourseComments.Add(comment);
+            _context.SaveChanges();
+        }
+
+        public Tuple<List<CourseComment>, int> getCourseComments(int courseId, int pageId = 1)
+        {
+            int take = 5;
+            int skip = (pageId - 1) * take;
+            int pageCount = _context.CourseComments.Count(c => !c.IsDelete && c.CourseId == courseId)/take;
+            if (pageCount % 2 != 0)
+                pageCount += 1;
+
+            var list = _context.CourseComments.Include(c => c.User).Where(c => !c.IsDelete && c.CourseId == courseId).Skip(skip).Take(take).OrderByDescending(c => c.CreateDate).ToList();
+            return Tuple.Create(list, pageCount);
         }
     }
 }
