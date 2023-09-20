@@ -52,7 +52,7 @@ namespace TopLearn.DataLayer.Entities.Course
 
         public DateTime? UpdateDate { get; set; }
 
-        public string DemoFileName { get; set; }
+        public string? DemoFileName { get; set; }
 
         public bool IsDelete { get; set; }
 
@@ -62,7 +62,7 @@ namespace TopLearn.DataLayer.Entities.Course
         public CourseGroup Group { get; set; }
 
         [ForeignKey("SubGroupId")]
-        public CourseGroup SubGroup { get; set; }
+        public CourseGroup? SubGroup { get; set; }
 
         [ForeignKey("TeacherId")]
         public User.User User { get; set; }
@@ -79,6 +79,9 @@ namespace TopLearn.DataLayer.Entities.Course
 
         public List<UserCourse> UserCourses { get; set; }
 
+        public List<CourseComment> CourseComments { get; set; }
+
+        public List<CourseVote> CourseVotes { get; set; }
         #endregion
 
 
