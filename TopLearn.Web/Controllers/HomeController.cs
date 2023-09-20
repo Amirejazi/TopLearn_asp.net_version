@@ -22,6 +22,7 @@ namespace TopLearn.Web.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.PopularCourses = _courseService.GetPopularCourse();
             return View(_courseService.GetCourses());
         }
 
