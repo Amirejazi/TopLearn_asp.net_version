@@ -22,8 +22,7 @@ namespace TopLearn.Web.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.PopularCourses = _courseService.GetPopularCourse();
-            return View(_courseService.GetCourses());
+            return View();
         }
 
         [Route("OnlinePayment/{id}")]
@@ -92,6 +91,10 @@ namespace TopLearn.Web.Controllers
             return Json(new { uploaded = true, url });
         }
 
+        public IActionResult Error404()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
