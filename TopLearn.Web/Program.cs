@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -42,6 +43,7 @@ builder.Services.AddTransient<IViewRenderService, RenderViewToString>();
 builder.Services.AddTransient<IPermissionService, PermissionService>();
 builder.Services.AddTransient<ICourseService, CourseService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
+builder.Services.AddTransient<IForumService, ForumService>();
 
 #endregion
 
@@ -62,6 +64,35 @@ builder.Services.AddAuthentication(option =>
 #endregion
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    await next.Invoke();
+    if (context.Response.StatusCode == 404)
+    {
+        context.Response.Redirect("/Home/Error404");
+    }
+});
+app.Use(async (context, next) =>
+{
+    Regex pattern = new Regex("^/+coursefilesonline(/.*)?$");
+    if (pattern.IsMatch(context.Request.Path.Value.ToString().ToLower()))
+    {
+        var callinUrl = context.Request.Headers["Referer"].ToString();
+        if (callinUrl!="" && (callinUrl.StartsWith("https://localhost:7003/") || callinUrl.StartsWith("http://localhost:7003/")))
+        {
+            await next.Invoke();
+        }
+        else
+        {
+            context.Response.Redirect("/Login");
+        }
+    }
+    else
+    {
+        await next.Invoke();
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
