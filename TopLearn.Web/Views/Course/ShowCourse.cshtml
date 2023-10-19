@@ -1,9 +1,11 @@
 ﻿@using TopLearn.Core.Convertors
 @using TopLearn.Core.Services.interfaces
+@using TopLearn.DataLayer.Entities.Course
 @model TopLearn.DataLayer.Entities.Course.Course
 @inject IOrderService _OrderService;
 @{
     ViewData["Title"] = Model.CourseTitle;
+    bool? notdemo = ViewBag.NotDemo as bool?;
     bool IsUserInCourse = false;
     if (User.Identity.IsAuthenticated)
     {
@@ -14,23 +16,23 @@
 
 @section MetaTags
 {
-    <meta name="robots" content="index, follow">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="شرح صفحه">
-    <meta property="og:site_name" value="خودآموز تاپ لرن">
-    <meta property="og:title" content="@Model.CourseTitle">
-    <meta property="og:url"
-          content="https://toplearn.com/ShowCourse/@Model.CourseId">
-    <meta property="og:image" content="/images/course/image/@Model.CourseImageName">
-    <meta property="og:image:url" content="/images/course/image/@Model.CourseImageName">
-    <meta property="og:image:width" content="700">
-    <meta property="og:image:height" content="500">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:description" content="آموزش Asp.Net Core  پیشرفته">
-    <meta property="og:price:currency" content="IRR">
-    <meta property="og:locale" content="ir_FA">
+<meta name="robots" content="index, follow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="شرح صفحه">
+<meta property="og:site_name" value="خودآموز تاپ لرن">
+<meta property="og:title" content="@Model.CourseTitle">
+<meta property="og:url"
+      content="https://toplearn.com/ShowCourse/@Model.CourseId">
+<meta property="og:image" content="/images/course/image/@Model.CourseImageName">
+<meta property="og:image:url" content="/images/course/image/@Model.CourseImageName">
+<meta property="og:image:width" content="700">
+<meta property="og:image:height" content="500">
+<meta property="og:image:type" content="image/jpg">
+<meta property="og:description" content="آموزش Asp.Net Core  پیشرفته">
+<meta property="og:price:currency" content="IRR">
+<meta property="og:locale" content="ir_FA">
 }
 
 <div class="container">
@@ -54,20 +56,31 @@
 
                     @Html.Raw(@Model.Description)
                     <div style="margin:10px">
-                        @if (Model.DemoFileName!=null)
+                        @if (Model.DemoFileName != null && notdemo == true)
                         {
-                            <video style="width:100%; height100%"  controls  poster="@Model.CourseImageName">
-                                <source src="~/images/course/demoes/@Model.DemoFileName" type="video/mp4"/>
-                                <source src="~/images/course/demoes/@Model.DemoFileName" type="video/ogg"/>
-                                <source src="~/images/course/demoes/@Model.DemoFileName" type="video/webm"/>
+                            <video style="width:100%; height100%" controls="controls" poster="~/images/course/image/@Model.CourseImageName">
+                                <source src="~/images/course/demoes/@Model.DemoFileName" type="video/mp4" />
+                                <source src="~/images/course/demoes/@Model.DemoFileName" type="video/ogg" />
+                                <source src="~/images/course/demoes/@Model.DemoFileName" type="video/webm" />
                             </video>
                         }
+                    </div>
+                    <div id="vote">
                     </div>
                     @if (!IsUserInCourse)
                     {
                         <div class="alert alert-info">
                             <p>بعد از ثبت نام در این دوره و تایید فاکتور لینک های دانلود برای شما فعال خواهند شد</p>
                         </div>
+                    }
+                    @if (ViewBag.episode != null)
+                    {
+                        CourseEpisode episode = ViewBag.episode as CourseEpisode;
+
+                        <h2>@episode.EpisodeTitle</h2>
+                        <video style="width:100%; height:100%" controls>
+                            <source src="@ViewBag.filePath" />
+                        </video>
                     }
 
                     <h2> سرفصل های این دوره : </h2>
@@ -81,17 +94,25 @@
                                         <a href="/DownloadFile/@episode.EpisodeId">
                                             @episode.EpisodeTitle
                                         </a>
-                                    </h3> 
+                                    </h3>
+                                    <a href="/DownloadFile/@episode.EpisodeId" class="download_btn"><i class="zmdi zmdi-download"></i></a>
                                 }
                                 else
                                 {
                                     <h3>@episode.EpisodeTitle</h3>
                                 }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    if (episode.IsFree || IsUserInCourse)
+                                    {
+                                        <a href="/ShowCourse/@Model.CourseId?episode=@episode.EpisodeId" class="download_btn"><i class="zmdi zmdi-play"></i></a>
+                                    }
+                                }
                                 <i>@(episode.IsFree ? "رایگان" : "نقدی")</i>
                                 <span>@episode.EpisodeTime </span>
                             </li>
                         }
-                        
+
                     </ul>
                 </section>
 
@@ -101,12 +122,12 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <form asp-controller="Course" asp-action="CreateComment"
-                                  data-ajax="true"
-                                  data-ajax-method="post"
-                                  data-ajax-update="#listComment"
-                                  data-ajax-mode="replace"
-                                  data-ajax-success="Success">
-                                <input type="hidden" name="comment.CourseId" value="@Model.CourseId"/>
+                              data-ajax="true"
+                              data-ajax-method="post"
+                              data-ajax-update="#listComment"
+                              data-ajax-mode="replace"
+                              data-ajax-success="Success">
+                                <input type="hidden" name="comment.CourseId" value="@Model.CourseId" />
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
@@ -127,8 +148,6 @@
                         }
 
                         <div class="comment-list" id="listComment">
-                            
-
                         </div>
                     </div>
                 </section>
@@ -182,6 +201,9 @@
                     <a href=""><i class="zmdi zmdi-twitter"></i></a>
                     <a href=""><i class="zmdi zmdi-linkedin"></i></a>
                 </div>
+                <div style="margin-bottom:10px;">
+                    <a class="btn btn-block btn-info" asp-controller="Forum" asp-action="Index" asp-route-courseId="@Model.CourseId">پرسش و پاسخ </a>
+                </div>
                 @if (Model.Tags != null)
                 {
                     <div class="tags-layer">
@@ -189,7 +211,7 @@
                         {
                             <a href="/Course?filter=@tag"> @tag </a>
                         }
-                        
+
                     </div>
                 }
 
@@ -197,21 +219,31 @@
         </div>
     </section>
 </div>
-
 @section Scripts
 {
-    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
-    <script>
-        function Success() {
-            $("#comment_Comment").val("");
-        }
+<script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+<script>
+    function Success() {
+        $("#comment_Comment").val("");
+    }
 
-        $(function() {
-            $("#listComment").load("/Course/ShowComments/" + @Model.CourseId);
-        });
+    $(function() {
+        $("#listComment").load("/Course/ShowComments/" + @Model.CourseId);
+    });
 
-        function pageComment(pageid) {
-            $("#listComment").load("/Course/ShowComments/" + @Model.CourseId + "?pageId="+ pageid);
-        }
-    </script>
+    function pageComment(pageid) {
+        $("#listComment").load("/Course/ShowComments/" + @Model.CourseId + "?pageId="+ pageid);
+    }
+
+    $(function() {
+        $("#vote").load("/Course/CourseVote/"+@Model.CourseId);
+    });
+
+    function vote(vote) {
+        $("#vote").fadeOut('slow');
+        $("#vote").load("/Course/AddVote/"+@Model.CourseId+"?vote="+vote);
+        $("#vote").fadeIn('slow');
+
+    }
+</script>
 }

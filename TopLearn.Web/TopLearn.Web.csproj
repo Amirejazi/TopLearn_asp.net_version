@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" Version="8.0.718" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -35,6 +36,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="SharpCompress" Version="0.34.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="ZarinPalSandbox" Version="2.0.4" />
   </ItemGroup>
@@ -48,6 +50,8 @@
     <Folder Include="wwwroot\images\course\demoes\" />
     <Folder Include="wwwroot\images\CKeditorUploaded\" />
     <Folder Include="wwwroot\coursefiles\" />
+    <Folder Include="wwwroot\CourseFilesOnline\" />
+    <Folder Include="wwwroot\CourseOnline\" />
   </ItemGroup>
 
 </Project>

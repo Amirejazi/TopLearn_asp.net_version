@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 **/wwwroot/images/course/demoes
+**/wwwroot/coursefiles
+**/wwwroot/CourseFilesOnline
+**/wwwroot/CourseOnline
