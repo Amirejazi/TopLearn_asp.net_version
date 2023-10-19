@@ -5,6 +5,12 @@
         <a asp-action="ShowCourse" asp-controller="Course" asp-route-id="@Model.CourseId" class="img-layer"><img style="height:180px" src="~/images/course/image/@Model.ImageName"></a>
         <h2><a asp-action="ShowCourse" asp-controller="Course" asp-route-id="@Model.CourseId"> @Model.Title </a></h2>
         <span> @(Model.Price==0?"رایگان": Model.Price.ToString("#,0")) </span>
-        <i>@Model.TotalTime</i>
+        @{
+            var duration = new TimeSpan(Model.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks));
+            var th = (int) duration.TotalHours;
+            var tm = (int) duration.TotalMinutes - (th * 60);
+            var ts = "00";
+        }
+        <i>@($"{th}:{tm}:{ts}")</i>
     </article>
 </div>

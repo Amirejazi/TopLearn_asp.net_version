@@ -287,7 +287,7 @@ namespace TopLearn.Core.Services
                 Title = c.CourseTitle,
                 ImageName = c.CourseImageName,
                 Price = c.CoursePrice,
-                //TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
+                CourseEpisodes = c.CourseEpisodes
             }).Skip(skip).Take(take).ToList();
 
             return Tuple.Create(output, pageCount);
@@ -305,9 +305,24 @@ namespace TopLearn.Core.Services
                     ImageName = c.CourseImageName,
                     Price = c.CoursePrice,
                     Title = c.CourseTitle,
-                    //TotalTime = new TimeSpan(c.CourseEpisodes.Sum(e => e.EpisodeTime.Ticks))
+                    CourseEpisodes = c.CourseEpisodes
                 })
                 .ToList();
+        }
+
+        public bool IsFree(int id)
+        {
+            return _context.Courses.Where(c => c.CourseId == id).Select(c => c.CoursePrice).First() == 0;
+        }
+
+        public List<Course> GetAllMasterCourses(string userName)
+        {
+            int userId = _context.Users.FirstOrDefault(u => u.UserName == userName).UserId;
+            return _context.Courses.Where(c => c.TeacherId == userId)
+                .Include(c => c.CourseStatus)
+                .Include(c => c.CourseEpisodes)
+                .ToList();
+
         }
 
 
@@ -376,6 +391,34 @@ namespace TopLearn.Core.Services
                 .FirstOrDefault(c => c.CourseId == courseId);
         }
 
+        public List<CourseEpisode> GetEpisodesByCourseId(int courseId)
+        {
+            return _context.CourseEpisodes.Where(c=>c.CourseId==courseId).Include(c=>c.Course).ToList();
+        }
+
+        public bool AddEpisode(AddEpisodeViewModel addEpisode, string userName)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.CourseId == addEpisode.CourseId);
+            int userId = _context.Users.FirstOrDefault(u => u.UserName == userName).UserId;
+
+            if (course == null || course.TeacherId != userId)
+            {
+                return false;
+            }
+
+            var episode = new CourseEpisode()
+            {
+                EpisodeTitle = addEpisode.EpisodeTitle,
+                CourseId = addEpisode.CourseId,
+                EpisodeFileName = addEpisode.EpisodeFileName,
+                IsFree = addEpisode.IsFree,
+                EpisodeTime = addEpisode.EpisodeTime
+            };
+            _context.Add(episode);
+            _context.SaveChanges();
+            return true;
+        }
+
         public void AddComment(CourseComment comment)
         {
             _context.CourseComments.Add(comment);
@@ -392,6 +435,33 @@ namespace TopLearn.Core.Services
 
             var list = _context.CourseComments.Include(c => c.User).Where(c => !c.IsDelete && c.CourseId == courseId).Skip(skip).Take(take).OrderByDescending(c => c.CreateDate).ToList();
             return Tuple.Create(list, pageCount);
+        }
+
+        public void AddVote(int userId, int courseId, bool vote)
+        {
+            var userVote = _context.CourseVotes.SingleOrDefault(cv => cv.UserId == userId && cv.CourseId == courseId);
+            if (userVote != null)
+            {
+                userVote.Vote = vote;
+            }
+            else
+            {
+                userVote = new CourseVote()
+                {
+                    UserId = userId,
+                    CourseId = courseId,
+                    Vote = vote
+                };
+                _context.CourseVotes.Add(userVote);
+            }
+
+            _context.SaveChanges();
+        }
+
+        public Tuple<int, int> GetCourseVote(int courseId)
+        {
+            var votes = _context.CourseVotes.Where(cv => cv.CourseId == courseId).Select(cv => cv.Vote).ToList();
+            return Tuple.Create(votes.Count(v => v), votes.Count(v => !v));
         }
     }
 }
