@@ -2,6 +2,7 @@
 @using TopLearn.Core.DTOs
 @using TopLearn.Core.Services.interfaces
 @inject IUserService _userservice
+@inject IPermissionService _PermissionService
 @{
     SideBarUserPanelViewModel sideBar = _userservice.GetSideBarUserPanel(User.Identity.Name);
 }
@@ -33,4 +34,16 @@
             </ul>
         </div>
     </section>
+    @*@if (_PermissionService.CheckPermission(6), User.Identity.Name)
+    {*@
+        <section>
+        <header><h3> پنل مدرس </h3></header>
+        <div class="inner">
+            <ul>
+                <li><a asp-controller="Master" asp-action="MasterCoursesList" > مدیریت دوره ها </a></li>
+                
+            </ul>
+        </div>
+        </section>
+    @*}*@
 </aside>
