@@ -1,0 +1,9 @@
+﻿@model List<TopLearn.Core.DTOs.Course.ShowCourseListItemViewModel>
+
+@if (Model != null)
+{
+    @foreach (var popular in Model)
+    {
+        <partial name="_BoxCourse1" model="@popular"/>
+    }
+}
