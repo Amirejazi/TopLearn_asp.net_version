@@ -1,0 +1,94 @@
+﻿@using System.Security.Claims
+@using TopLearn.Core.Convertors
+@using TopLearn.Core.Services.interfaces
+@using TopLearn.DataLayer.Entities.Course
+@model IEnumerable<TopLearn.DataLayer.Entities.Question.Question>
+@inject ICourseService _CourseService;
+@inject IOrderService _OrderService;
+@{
+    ViewData["Title"] = "انجمن ";
+    var course = new Course();
+    if (ViewBag.courseId != null)
+    {
+        course = _CourseService.GetCourseById((int)ViewBag.courseId);
+    }
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/"> تاپ لرن </a></li>
+            <li class="breadcrumb-item"><a href="/Forum/Questions">  پرسش و پاسخ ها</a></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="top-bar">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12 pull-right">
+                        <form method="get">
+                            <input type="hidden" value="@ViewBag.courseId" name="courseId"/>
+                            <div class="input">
+                                <input class="searchinput" type="text" name="filter" placeholder="عنوان پرسش مورد نظر ...">
+                                <button class="searchsub"><i class="zmdi zmdi-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    @if (ViewBag.courseId != null)
+                    {
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (course.CoursePrice == 0 || _OrderService.IsUserInCourse(User.Identity.Name, course.CourseId))
+                            {
+                                <div class="col-md-3 col-sm-12 col-xs-12 pull-right">
+                                    <a class="btn btn-info" asp-controller="Forum" asp-action="CreateQuestion" asp-route-id="@ViewBag.courseId" >پرسیدن سوال</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-3 col-sm-12 alert alert-danger">
+                                    شما این دوره رو خریداری نکردید
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-md-3 col-sm-12 alert alert-danger">
+                                برای پرسیدن سوال وارد سایت شوید
+                            </div>
+                        }
+                    }
+
+
+                </div>
+            </div>
+            <div class="inner" style="margin-top: 25px;">
+                @foreach (var question in Model)
+                {
+                    <div class="panel ">
+                        <div class="panel-heading">
+                            <img src="~/images/UserAvatar/@question.User.UserAvatar" style="max-width: 40px; border-radius: 20px;" />
+                            @question.User.UserName | @question.CreateDate.ToShamsi()
+
+                            <h1 style="margin:7px">
+                                <a asp-controller="Forum" asp-action="ShowQuestion" asp-route-id="@question.QuestionId">
+                                    عنوان: @question.Title
+                                </a>
+                            </h1>
+                            <div class="text-muted pull-left">
+                                <a class="btn btn-secondary" asp-controller="Course" asp-action="ShowCourse" asp-route-id="@question.Course.CourseId">@question.Course.CourseTitle</a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            @Html.Raw(question.Body)
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
