@@ -5,6 +5,7 @@ using TopLearn.Core.Services.interfaces;
 
 namespace TopLearn.Web.Pages.Admin.Courses
 {
+    //[PermissionChecker(10)]
     public class IndexModel : PageModel
     {
         private ICourseService _courseService;

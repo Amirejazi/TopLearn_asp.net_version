@@ -6,6 +6,7 @@ using TopLearn.DataLayer.Entities.Order;
 
 namespace TopLearn.Web.Pages.Admin.Discounts
 {
+    //[PermissionChecker(17)]
     public class EditDiscountModel : PageModel
     {
         private IOrderService _orderService;

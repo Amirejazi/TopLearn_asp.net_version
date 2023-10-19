@@ -6,6 +6,7 @@ using TopLearn.DataLayer.Entities.Course;
 
 namespace TopLearn.Web.Pages.Admin.Courses
 {
+    //[PermissionChecker(11)]
     public class CreateCourseModel : PageModel
     {
         private ICourseService _courseService;

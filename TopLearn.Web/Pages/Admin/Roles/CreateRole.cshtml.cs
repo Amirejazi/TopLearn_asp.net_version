@@ -5,6 +5,7 @@ using TopLearn.DataLayer.Entities.User;
 
 namespace TopLearn.Web.Pages.Admin.Roles
 {
+    //[PermissionChecker(20)]
     public class CreateRoleModel : PageModel
     {
         private IPermissionService _permissionService;

@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using TopLearn.Core.Security;
 using TopLearn.Core.Services.interfaces;
 using TopLearn.DataLayer.Entities.Course;
 
 namespace TopLearn.Web.Pages.Admin.CourseGroups
 {
+    //[PermissionChecker(8)]
     public class CreateGroupModel : PageModel
     {
         private ICourseService _courseService;

@@ -5,6 +5,7 @@ using TopLearn.DataLayer.Entities.Order;
 
 namespace TopLearn.Web.Pages.Admin.Discounts
 {
+    //[PermissionChecker(15)]
     public class IndexModel : PageModel
     {
         private IOrderService _orderService;

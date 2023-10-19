@@ -116,9 +116,6 @@ namespace TopLearn.Core.Services
 
             return RolesPermission.Any(r => UserRoles.Contains(r));
 
-
-
-
         }
     }
 }

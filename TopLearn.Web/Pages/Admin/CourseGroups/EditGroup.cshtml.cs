@@ -5,6 +5,7 @@ using TopLearn.DataLayer.Entities.Course;
 
 namespace TopLearn.Web.Pages.Admin.CourseGroups
 {
+    //[PermissionChecker(9)]
     public class EditGroupModel : PageModel
     {
         private ICourseService _courseService;
