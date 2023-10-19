@@ -1,23 +1,22 @@
 ﻿@using TopLearn.Core.DTOs.Course
-@model Tuple<List<TopLearn.Core.DTOs.Course.ShowCourseListItemViewModel>, int>
 @{
     ViewData["Title"] = "خانه";
 }
 
 @section SearchBox
 {
-    <header>
-        <a href="" class="logo"><img src="~/images/logo.png"></a>
-        <h1> با اساتید مجرب و کارآزموده در خودآموز تاپ لرن </h1>
-        <h2> آموزش ببینید ، تجربه کسب کنید و بازار کار شوید </h2>
-        <h3> با کمترین هزینه خودت یاد بگیر </h3>
-    </header>
-    <div class="search-form">
-        <form action="/Course" method="get">
-            <input type="text" name="filter" placeholder="چی دوست داری یاد بگیری ؟">
-            <button><i class="zmdi zmdi-search"></i></button>
-        </form>
-    </div>
+<header>
+    <a href="" class="logo"><img src="~/images/logo.png"></a>
+    <h1> با اساتید مجرب و کارآزموده در خودآموز تاپ لرن </h1>
+    <h2> آموزش ببینید ، تجربه کسب کنید و بازار کار شوید </h2>
+    <h3> با کمترین هزینه خودت یاد بگیر </h3>
+</header>
+<div class="search-form">
+    <form action="/Course" method="get">
+        <input type="text" name="filter" id="auto_filter" placeholder="چی دوست داری یاد بگیری ؟">
+        <button><i class="zmdi zmdi-search"></i></button>
+    </form>
+</div>
 }
 
 <main id="home-page">
@@ -25,35 +24,38 @@
         <section class="terms-items">
             <header>
                 <h2> آخرین دوره های تاپ لرن </h2>
-                <a href=""> مشاهده همه دوره ها </a>
+                <a asp-controller="Course" asp-action="Index"> مشاهده همه دوره ها </a>
             </header>
             <div class="row">
-                @foreach (var item in Model.Item1)
-                {
-                    
-                    <partial name="_BoxCourse1" model="@item"/>
-                }
+                <cache expires-after="@TimeSpan.FromMinutes(5)">
+                    @await Component.InvokeAsync("LatestCourseComponent")
+                </cache>
             </div>
         </section>
 
         <hr>
-        @{
-            List<ShowCourseListItemViewModel> popularCourses = ViewBag.PopularCourses as List<ShowCourseListItemViewModel>;
-        }
         <section class="terms-items">
             <header>
                 <h2> دوره های محبوب تاپ لرن </h2>
-                <a href=""> مشاهده همه دوره ها </a>
+                <a  asp-controller="Course" asp-action="Index"> مشاهده همه دوره ها </a>
             </header>
             <div class="row">
-                @if (popularCourses != null)
-                {
-                    @foreach (var popular in popularCourses)
-                    {
-                        <partial name="_BoxCourse1" model="@popular"/>
-                    }
-                }
+                <cache expires-after="@TimeSpan.FromMinutes(5)">
+                    @await Component.InvokeAsync("PopularCourseComponent")
+                </cache>
             </div>
         </section>
     </div>
 </main>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#auto_filter").autocomplete({
+                source: "api/courseapi/search",
+            });
+        });
+    </script>
+}
